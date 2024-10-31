@@ -2,22 +2,20 @@ services:
   ansible-manager:
     build:
       dockerfile: Dockerfile_manager
-#    command: sleep infinity
     networks:
       - my_network
 
   ansible-node1:
     build:
       dockerfile: Dockerfile_node
- #   command: sleep infinity
     networks:
       - my_network
 
   ansible-node2:
     build:
       dockerfile: Dockerfile_node
-  #  command: sleep infinity
     networks:
       - my_network
 networks:
   my_network:
+
