@@ -44,3 +44,17 @@ test ansible ping
 docker compose exec -it ansible-manager ansible -i inventory node -m ping
 
 ```
+install nginx on the nodes with the PASSWORD: password
+```
+docker cp install_nginx.yml ansible_server:/
+docker compose exec ansible-manager ansible-playbook -i inventory install_nginx.yml --ask-become-pass
+```
+start the nginx servers on the nodes 
+```
+docker cp start_nginx.yml ansible_server:/
+docker compose exec ansible-manager ansible-playbook -i inventory start_nginx.yml --ask-become-pass
+```
+test the acces to nginx on the nodes 
+```
+ curl $IP1:8080
+ curl $IP2:8080
