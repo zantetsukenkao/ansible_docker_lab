@@ -7,7 +7,7 @@
 To make it easy for you to get started with this lab, here's a list of recommended next steps.
 
 
-## Add your files
+## build and configure your envirement
 
 
 
