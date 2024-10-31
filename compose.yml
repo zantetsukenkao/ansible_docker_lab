@@ -9,12 +9,14 @@ services:
   ansible-node1:
     build:
       dockerfile: Dockerfile_node
+    container_name: ansible_node1
     networks:
       - my_network
 
   ansible-node2:
     build:
       dockerfile: Dockerfile_node
+    container_name: ansible_node2
     networks:
       - my_network
 networks:
