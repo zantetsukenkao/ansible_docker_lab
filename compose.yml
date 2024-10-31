@@ -2,6 +2,7 @@ services:
   ansible-manager:
     build:
       dockerfile: Dockerfile_manager
+    container_name: ansible_server
     networks:
       - my_network
 
