@@ -16,8 +16,17 @@ cd existing_repo
 docker compose up -d --build ( or docker-compose if you use the python version of docker compose)
 docker network inspect ansible_docker_lab_my_network
 edit the inventory file with the ip@ of the tow nodes
+edit the myscript.sh with the ip@ of the nodes
 copy the inventoty file into ansible-server container
 docker cp inventory ansible_server:/
+copy the myscript file into ansible-server container
+docker cp myscript.sh ansible_server:/
+
+docker compose exec -it ansible-manager ./myscript.sh
+docker compose exec -it ansible-manager ansible -i inventory node -m ping
+
+
+
  git remote add origin https://gitlab.com/medalibettaieb/ansible_docker_lab.git
 git branch -M main
 git push -uf origin main
