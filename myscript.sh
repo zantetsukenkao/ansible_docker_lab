@@ -5,8 +5,8 @@ SSH_KEY_PATH="$HOME/.ssh/id_rsa"  # Chemin de la clé SSH
 
 # Détails des serveurs distants
 SERVERS=(
-  "ansible_user@192.168.128.2:password"  # Format: utilisateur@hôte:motdepasse
-  "ansible_user@192.168.128.3:password"
+  "ansible_user@ipNode1:password"  # Format: utilisateur@hôte:motdepasse
+  "ansible_user@ipNode2:password"
 )
 
 # Vérifier si la clé existe déjà pour éviter la régénération
