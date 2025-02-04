@@ -5,7 +5,7 @@
 ## build and configure your envirement
 
 
-```
+
  Récupérer les adresses IP des conteneurs (node1 et node2)
 ```
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node1 
