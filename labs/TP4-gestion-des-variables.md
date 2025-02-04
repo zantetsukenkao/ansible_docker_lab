@@ -1,4 +1,6 @@
-# Objectif :
+# Gestion des variables
+
+## Objectif :
 Améliorer le playbook précédent en utilisant des variables pour gérer les noms des répertoires, les utilisateurs et les groupes. L'exercice se déroule en 4 étapes :
 
 1. Créer une variable pour stocker le nom du répertoire.
