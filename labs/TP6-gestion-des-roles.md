@@ -41,9 +41,9 @@ systemctl status ntp
 ```
 ---
 
+
 # Créer un rôle Ansible pour installer et démarrer Nginx
 
----
 
 ## Objectif
 Créer un rôle Ansible qui permet d'installer et de démarrer le serveur web **Nginx** sur les nœuds cibles. Le rôle doit être structuré de manière modulaire et réutilisable.
