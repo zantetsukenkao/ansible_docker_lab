@@ -29,13 +29,14 @@ ssh ansible_user@<IP_du_node1>
 exit
 ssh ansible_user@<IP_du_node>
 exit
-
+```
 
 ## Utiliser Ansible pour tester la configuration
 
 
 
 Pré-requis : sur le serveur ansible installer l'éditeur de texte vim
+
 ```
 sudo apt update
 sudo apt install vim
