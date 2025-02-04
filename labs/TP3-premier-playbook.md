@@ -81,4 +81,4 @@ ansible-playbook -i inventory setup_app_environment.yml
 ---
 
 ## Remarque
-- Pensez à référencer votre solution dans votre repos GIT.
+- Pensez à référencer votre solution (playbook) dans votre repos GIT.
