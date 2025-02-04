@@ -90,16 +90,11 @@ Après avoir exécuté le playbook, vérifiez que :
 
 ---
 
-## Conseils pour les stagiaires
+## Conseils
 1. **Utilisez `ansible-galaxy`** : Cette commande simplifie la création de la structure d'un rôle.
 2. **Testez chaque tâche** : Vérifiez que chaque tâche fonctionne avant de passer à la suivante.
 3. **Explorez les modules** : Utilisez `ansible-doc <module>` pour en savoir plus sur les modules utilisés (par exemple, `ansible-doc apt`).
 
----
-
-## Durée estimée
-- **Niveau débutant** : 45 minutes à 1 heure.
-- **Niveau intermédiaire** : 30 à 45 minutes.
 
 ---
 
