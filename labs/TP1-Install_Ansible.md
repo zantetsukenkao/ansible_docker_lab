@@ -8,6 +8,6 @@
 ```
 cd existing_repo
 ```
-utiliser docker compose
+utiliser docker compose pour monter un serveur ansible et deux nodes cibles
 ```
 docker compose up -d --build
