@@ -1,60 +1,79 @@
-# ansible_docker_lab
+# Objectif :
+Créer un playbook Ansible qui automatise les tâches suivantes sur un ou plusieurs serveurs distants :
 
+- Créer un répertoire.
+- Créer un groupe d'utilisateurs.
+- Créer un utilisateur et l'ajouter au groupe.
+- Appliquer les droits de l'utilisateur créé et des permissions `744` sur le répertoire.
 
+---
 
-## Getting started
+## Documentation officielle
+Pour réaliser cet exercice, vous pouvez vous appuyer sur la [documentation officielle d'Ansible](https://docs.ansible.com/ansible/latest/index.html). N'hésitez pas à consulter les modules suivants :
+- [`file`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html) pour la gestion des fichiers et répertoires.
+- [`group`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/group_module.html) pour la création de groupes.
+- [`user`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html) pour la création d'utilisateurs.
 
-To make it easy for you to get started with this lab, here's a list of recommended next steps.
+---
 
+## Contexte
+Vous êtes administrateur système et devez préparer un environnement pour une nouvelle application. Cette application nécessite :
 
-## build and configure your envirement
+- Un répertoire dédié pour stocker des fichiers.
+- Un groupe d'utilisateurs pour gérer les accès.
+- Un utilisateur spécifique qui sera propriétaire du répertoire.
+- Des permissions spécifiques sur le répertoire pour garantir la sécurité et l'accès.
 
+---
 
+## Étapes à suivre
 
-```
-cd existing_repo
-```
- use docker-compose if you use the python version of docker compose
-```
-docker compose up -d --build
-docker network inspect ansible_docker_lab_my_network
-IP1=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node1)
-IP2=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node2)
-```
-edit the inventory file with the ip@ of the tow nodes
-```
-sed -i "s/ipNode1/$IP1/g; s/ipNode2/$IP2/g" inventory
-```
-edit the myscript.sh with the ip@ of the nodes
-```
-sed -i "s/ipNode1/$IP1/g; s/ipNode2/$IP2/g" myscript.sh
-```
-copy the inventoty file into ansible-server container
-copy the myscript file into ansible-server container
-```
-./copytocontainer.sh
+### 1. Création d'un répertoire :
+- Créez un répertoire nommé `/app_data` sur les serveurs distants.
 
-```
-execute the copy of the public key to the nodes
-```
-docker compose exec -it ansible-manager ./myscript.sh
-```
-test ansible ping
-```
-docker compose exec -it ansible-manager ansible -i inventory node -m ping
+### 2. Création d'un groupe d'utilisateurs :
+- Créez un groupe nommé `app_group`.
 
-```
-install nginx on the nodes with the PASSWORD: password
-```
-docker cp install_nginx.yml ansible_server:/
-docker compose exec ansible-manager ansible-playbook -i inventory install_nginx.yml --ask-become-pass
-```
-start the nginx servers on the nodes 
-```
-docker cp start_nginx.yml ansible_server:/
-docker compose exec ansible-manager ansible-playbook -i inventory start_nginx.yml --ask-become-pass
-```
-test the acces to nginx on the nodes 
-```
- curl $IP1:8080
- curl $IP2:8080
+### 3. Création d'un utilisateur :
+- Créez un utilisateur nommé `app_user`.
+- Assurez-vous que l'utilisateur a un répertoire home dans `/home/app_user`.
+- Ajoutez l'utilisateur `app_user` au groupe `app_group`.
+
+### 4. Application des droits sur le répertoire :
+- Définissez `app_user` comme propriétaire du répertoire `/app_data`.
+- Définissez `app_group` comme groupe propriétaire du répertoire `/app_data`.
+- Appliquez les permissions `744` sur le répertoire `/app_data`.
+
+---
+
+## Structure du playbook
+- Le playbook doit être écrit en YAML.
+- Il doit contenir au moins quatre tâches :
+  1. Création du répertoire.
+  2. Création du groupe.
+  3. Création de l'utilisateur et ajout au groupe.
+  4. Application des droits et permissions sur le répertoire.
+
+---
+
+## Fichiers à fournir
+- Un playbook Ansible nommé `setup_app_environment.yml`.
+
+---
+
+## Validation
+Après avoir exécuté le playbook, vérifiez que :
+
+1. Le répertoire `/app_data` existe.
+2. Le groupe `app_group` existe.
+3. L'utilisateur `app_user` existe et appartient au groupe `app_group`.
+4. Le répertoire `/app_data` a :
+   - `app_user` comme propriétaire.
+   - `app_group` comme groupe propriétaire.
+   - Les permissions `744` (`rwxr--r--`).
+
+---
+
+## Exemple de commande pour exécuter le playbook
+```bash
+ansible-playbook -i inventory setup_app_environment.yml
