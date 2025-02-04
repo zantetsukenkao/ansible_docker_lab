@@ -1,60 +1,51 @@
-# ansible_docker_lab
+# Configurer SSH entre les conteneurs
 
-
-
-## Getting started
-
-To make it easy for you to get started with this lab, here's a list of recommended next steps.
 
 
 ## build and configure your envirement
 
 
+```
+ Récupérer les adresses IP des conteneurs (node1 et node2)
+```
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node1 
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node2
+```
+Générer les clés SSH sur le serveur Ansible
+```
+docker exec -it ansible_server bash
+su - ansible_user 
+ssh-keygen -t rsa -b 2048
 
 ```
-cd existing_repo
+Copier la clé publique vers les nodes cibles
 ```
- use docker-compose if you use the python version of docker compose
+ssh-copy-id ansible_user@<IP_du_node1>
+ssh-copy-id ansible_user@<IP_du_node2>
 ```
-docker compose up -d --build
-docker network inspect ansible_docker_lab_my_network
-IP1=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node1)
-IP2=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node2)
+Tester la connexion SSH
 ```
-edit the inventory file with the ip@ of the tow nodes
-```
-sed -i "s/ipNode1/$IP1/g; s/ipNode2/$IP2/g" inventory
-```
-edit the myscript.sh with the ip@ of the nodes
-```
-sed -i "s/ipNode1/$IP1/g; s/ipNode2/$IP2/g" myscript.sh
-```
-copy the inventoty file into ansible-server container
-copy the myscript file into ansible-server container
-```
-./copytocontainer.sh
+ssh ansible_user@<IP_du_node1>
+exit
+ssh ansible_user@<IP_du_node>
+exit
+
+
+## Utiliser Ansible pour tester la configuration
 
 ```
-execute the copy of the public key to the nodes
+Pré-requis : sur le serveur ansible installer l'éditeur de texte vim
 ```
-docker compose exec -it ansible-manager ./myscript.sh
+sudo apt update
+sudo apt install vim
 ```
-test ansible ping
+Créez un fichier inventory pour référencer vos nodes :
 ```
-docker compose exec -it ansible-manager ansible -i inventory node -m ping
+[node] 
+ansible_node ansible_host=<IP_du_node1> ansible_user=ansible_user
+ansible_node ansible_host=<IP_du_node2> ansible_user=ansible_user
 
 ```
-install nginx on the nodes with the PASSWORD: password
+Ensuite, testez Ansible via une commande ad hoc :
 ```
-docker cp install_nginx.yml ansible_server:/
-docker compose exec ansible-manager ansible-playbook -i inventory install_nginx.yml --ask-become-pass
-```
-start the nginx servers on the nodes 
-```
-docker cp start_nginx.yml ansible_server:/
-docker compose exec ansible-manager ansible-playbook -i inventory start_nginx.yml --ask-become-pass
-```
-test the acces to nginx on the nodes 
-```
- curl $IP1:8080
- curl $IP2:8080
+ansible -i inventory node -m ping
