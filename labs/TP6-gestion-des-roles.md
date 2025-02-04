@@ -1,3 +1,46 @@
+# Exercice : Utilisation d'un rôle Ansible Galaxy (NTP)**  
+
+## Créer un fichier `requirements.yml`**  
+Ajoutez les dépendances nécessaires :  
+
+```
+---
+roles:
+  - name: geerlingguy.ntp
+```
+## Installer le rôle depuis Ansible Galaxy
+Utilisez la commande suivante :
+
+
+```
+ansible-galaxy install -r requirements.yml
+```
+
+## Créer un playbook pour tester le rôle
+Fichier : deploy_ntp.yml
+
+```
+---
+- name: Installer et configurer NTP
+  hosts: all
+  become: true
+  roles:
+    - geerlingguy.ntp
+```
+
+## Lancer le playbook
+```
+ansible-playbook -i <votre_inventaire> deploy_ntp.yml
+```
+
+## Validation
+Vérifiez que NTP est correctement configuré et actif :
+
+```
+systemctl status ntp
+```
+---
+
 # Créer un rôle Ansible pour installer et démarrer Nginx
 
 ---
