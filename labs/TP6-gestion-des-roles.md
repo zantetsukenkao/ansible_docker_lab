@@ -1,60 +1,67 @@
-# ansible_docker_lab
+# Énoncé de l'exercice : Créer un rôle Ansible pour installer et démarrer Nginx
 
+---
 
+## Objectif
+Créer un rôle Ansible qui permet d'installer et de démarrer le serveur web **Nginx** sur les nœuds cibles. Le rôle doit être structuré de manière modulaire et réutilisable.
 
-## Getting started
+---
 
-To make it easy for you to get started with this lab, here's a list of recommended next steps.
+## Contexte
+Vous êtes administrateur système et devez automatiser l'installation et la configuration de Nginx sur plusieurs serveurs. Pour cela, vous allez créer un rôle Ansible qui :
+1. Installe Nginx.
+2. Démarre et active le service Nginx.
+3. Vérifie que Nginx est bien installé et fonctionnel.
 
+---
 
-## build and configure your envirement
+## Étapes à suivre
 
+### 1. Créer la structure du rôle
+- Utilisez la commande `ansible-galaxy` pour créer la structure de base du rôle.
+- Le rôle doit s'appeler `nginx_role`.
 
+### 2. Définir les tâches
+- Créez un fichier `tasks/main.yml` pour définir les tâches suivantes :
+  - Installer Nginx.
+  - Démarrer et activer le service Nginx.
+  - Vérifier que Nginx est fonctionnel.
 
-```
-cd existing_repo
-```
- use docker-compose if you use the python version of docker compose
-```
-docker compose up -d --build
-docker network inspect ansible_docker_lab_my_network
-IP1=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node1)
-IP2=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node2)
-```
-edit the inventory file with the ip@ of the tow nodes
-```
-sed -i "s/ipNode1/$IP1/g; s/ipNode2/$IP2/g" inventory
-```
-edit the myscript.sh with the ip@ of the nodes
-```
-sed -i "s/ipNode1/$IP1/g; s/ipNode2/$IP2/g" myscript.sh
-```
-copy the inventoty file into ansible-server container
-copy the myscript file into ansible-server container
-```
-./copytocontainer.sh
+### 3. Tester le rôle
+- Créez un playbook pour appliquer le rôle sur les nœuds cibles.
+- Exécutez le playbook et vérifiez que Nginx est installé et fonctionnel.
 
-```
-execute the copy of the public key to the nodes
-```
-docker compose exec -it ansible-manager ./myscript.sh
-```
-test ansible ping
-```
-docker compose exec -it ansible-manager ansible -i inventory node -m ping
+---
 
-```
-install nginx on the nodes with the PASSWORD: password
-```
-docker cp install_nginx.yml ansible_server:/
-docker compose exec ansible-manager ansible-playbook -i inventory install_nginx.yml --ask-become-pass
-```
-start the nginx servers on the nodes 
-```
-docker cp start_nginx.yml ansible_server:/
-docker compose exec ansible-manager ansible-playbook -i inventory start_nginx.yml --ask-become-pass
-```
-test the acces to nginx on the nodes 
-```
- curl $IP1:8080
- curl $IP2:8080
+## Fichiers à fournir
+1. Un rôle Ansible nommé `nginx_role`.
+2. Un playbook nommé `deploy_nginx.yml` pour appliquer le rôle.
+
+---
+
+## Validation
+Après avoir exécuté le playbook, vérifiez que :
+1. Nginx est installé sur les nœuds cibles.
+2. Le service Nginx est actif et fonctionnel.
+3. Vous pouvez accéder à la page d'accueil par défaut de Nginx via un navigateur ou une commande `curl`.
+
+---
+
+## Conseils pour les stagiaires
+1. **Utilisez `ansible-galaxy`** : Cette commande simplifie la création de la structure d'un rôle.
+2. **Testez chaque tâche** : Vérifiez que chaque tâche fonctionne avant de passer à la suivante.
+3. **Explorez les modules** : Utilisez `ansible-doc <module>` pour en savoir plus sur les modules utilisés (par exemple, `ansible-doc apt`).
+
+---
+
+## Durée estimée
+- **Niveau débutant** : 45 minutes à 1 heure.
+- **Niveau intermédiaire** : 30 à 45 minutes.
+
+---
+
+## Liens utiles
+- [Documentation officielle d'Ansible](https://docs.ansible.com/ansible/latest/index.html)
+- [Module `apt`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html)
+- [Module `service`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html)
+- [Module `uri`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/uri_module.html)
