@@ -77,7 +77,7 @@ Après avoir exécuté le playbook, vérifiez que :
 ## Exemple de commande pour exécuter le playbook
 ```bash
 ansible-playbook -i inventory setup_app_environment.yml
-
+```
 ---
 
 ## Remarque
