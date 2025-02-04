@@ -1,4 +1,4 @@
-# Exercice : Utilisation d'un rôle Ansible Galaxy (NTP)**  
+# Utilisation d'un rôle Ansible Galaxy (NTP)  
 
 ## Créer un fichier `requirements.yml`**  
 Ajoutez les dépendances nécessaires :  
