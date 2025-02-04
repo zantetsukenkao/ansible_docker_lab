@@ -41,6 +41,7 @@ sudo apt update
 sudo apt install vim
 ```
 Créez un fichier inventory pour référencer vos nodes :
+
 ```
 [node] 
 ansible_node ansible_host=<IP_du_node1> ansible_user=ansible_user
@@ -50,3 +51,4 @@ ansible_node ansible_host=<IP_du_node2> ansible_user=ansible_user
 Ensuite, testez Ansible via une commande ad hoc :
 ```
 ansible -i inventory node -m ping
+```
