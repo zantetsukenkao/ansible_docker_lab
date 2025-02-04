@@ -1,4 +1,4 @@
-# Exercice : Tester des commandes ad hoc Ansible
+# Tester des commandes ad hoc Ansible
 
 ---
 
