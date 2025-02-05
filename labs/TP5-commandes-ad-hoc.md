@@ -86,7 +86,7 @@ ansible all -i inventory -m command -a "uptime"
 Copiez un fichier local nommé config.conf vers le répertoire /etc/myapp/ sur tous les nœuds :
 
 ```
-ansible all -i inventory -m copy -a "src=./config.conf dest=/etc/myapp/config.conf"
+ansible all -i inventory -m copy -a "src=./config.conf dest=/home/ansible_user/config.conf"
 ```
 
 ### Supprimer un fichier ou un répertoire
