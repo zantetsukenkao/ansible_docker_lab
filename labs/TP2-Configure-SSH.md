@@ -2,7 +2,7 @@
 
 
 
-## build and configure your envirement
+## Configurer l'envirement
 
 
 
