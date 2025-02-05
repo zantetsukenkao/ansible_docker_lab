@@ -1,19 +1,12 @@
-# Utilisation d'un rôle Ansible Galaxy (NTP)  
+# Utilisation d'un rôle Ansible Galaxy (Installation et configuration d'Apache)  
 
-## Créer un fichier `requirements.yml`**  
-Ajoutez les dépendances nécessaires :  
 
-```
----
-roles:
-  - name: geerlingguy.ntp
-```
 ## Installer le rôle depuis Ansible Galaxy
 Utilisez la commande suivante :
 
 
 ```
-ansible-galaxy install -r requirements.yml
+ansible-galaxy install geerlingguy.apache
 ```
 
 ## Créer un playbook pour tester le rôle
@@ -21,23 +14,25 @@ Fichier : deploy_ntp.yml
 
 ```
 ---
-- name: Installer et configurer NTP
+- name: Installer et configurer Apache
   hosts: all
   become: true
   roles:
-    - geerlingguy.ntp
+    - geerlingguy.apache
+  vars:
+    apache_listen_port: 8080
+
 ```
 
 ## Lancer le playbook
 ```
-ansible-playbook -i <votre_inventaire> deploy_ntp.yml
+ansible-playbook -i inventory install_apache.yml
 ```
 
 ## Validation
-Vérifiez que NTP est correctement configuré et actif :
-
+Vérifiez que le service Apache est bien démarré :
 ```
-systemctl status ntp
+sudo systemctl status apache2
 ```
 ---
 
