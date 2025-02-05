@@ -1,60 +1,84 @@
-# ansible_docker_lab
+# Créer un module personnalisé Ansible  
 
+## Créer un module personnalisé 
 
-
-## Getting started
-
-To make it easy for you to get started with this lab, here's a list of recommended next steps.
-
-
-## build and configure your envirement
-
-
+### Étape 1 : Créer la structure de répertoire  
 
 ```
-cd existing_repo
+mkdir -p custom_module/library
+cd custom_module/library
 ```
- use docker-compose if you use the python version of docker compose
-```
-docker compose up -d --build
-docker network inspect ansible_docker_lab_my_network
-IP1=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node1)
-IP2=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ansible_node2)
-```
-edit the inventory file with the ip@ of the tow nodes
-```
-sed -i "s/ipNode1/$IP1/g; s/ipNode2/$IP2/g" inventory
-```
-edit the myscript.sh with the ip@ of the nodes
-```
-sed -i "s/ipNode1/$IP1/g; s/ipNode2/$IP2/g" myscript.sh
-```
-copy the inventoty file into ansible-server container
-copy the myscript file into ansible-server container
-```
-./copytocontainer.sh
+
+### Étape 2 : Écrire le module personnalisé
+Nom du fichier : hello_module.py
 
 ```
-execute the copy of the public key to the nodes
-```
-docker compose exec -it ansible-manager ./myscript.sh
-```
-test ansible ping
-```
-docker compose exec -it ansible-manager ansible -i inventory node -m ping
+#!/usr/bin/python
+
+from ansible.module_utils.basic import AnsibleModule
+
+def main():
+    # Définition des arguments acceptés par le module
+    module_args = dict(
+        name=dict(type='str', required=True)
+    )
+
+    # Initialisation du module
+    module = AnsibleModule(
+        argument_spec=module_args
+    )
+
+    # Récupération du nom passé en paramètre
+    name = module.params['name']
+
+    # Message de retour
+    result = dict(
+        changed=False,
+        message=f"Hello, {name}!"
+    )
+
+    # Fin de l'exécution avec succès
+    module.exit_json(**result)
+
+if __name__ == '__main__':
+    main()
 
 ```
-install nginx on the nodes with the PASSWORD: password
+
+N’oubliez pas de rendre ce fichier exécutable :
+
 ```
-docker cp install_nginx.yml ansible_server:/
-docker compose exec ansible-manager ansible-playbook -i inventory install_nginx.yml --ask-become-pass
+chmod +x hello_module.py
+
 ```
-start the nginx servers on the nodes 
+### Créer le playbook pour tester le module
+Fichier : test_module.yml
+
 ```
-docker cp start_nginx.yml ansible_server:/
-docker compose exec ansible-manager ansible-playbook -i inventory start_nginx.yml --ask-become-pass
+---
+- name: Test du module personnalisé Ansible
+  hosts: localhost
+  tasks:
+    - name: Exécuter le module hello_module
+      hello_module:
+        name: "Ansible User"
+
 ```
-test the acces to nginx on the nodes 
+
+### Lancer le playbook
+
+Ajoutez le répertoire library au chemin de recherche des modules :
+
 ```
- curl $IP1:8080
- curl $IP2:8080
+ANSIBLE_LIBRARY=./library ansible-playbook test_module.yml
+```
+
+### Validation
+Vérifiez que la sortie contient :
+
+```
+TASK [Exécuter le module hello_module]
+ok: [localhost] => {
+    "changed": false,
+    "message": "Hello, Ansible User!"
+}
