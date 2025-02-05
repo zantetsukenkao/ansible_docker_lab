@@ -2,7 +2,7 @@
 
 
 
-## Configurer l'envirement
+## Configurer l'environement
 
 
 
