@@ -45,8 +45,8 @@ Créez un fichier inventory pour référencer vos nodes :
 
 ```
 [node] 
-ansible_node ansible_host=<IP_du_node1> ansible_user=ansible_user
-ansible_node ansible_host=<IP_du_node2> ansible_user=ansible_user
+ansible_node1 ansible_host=<IP_du_node1> ansible_user=ansible_user
+ansible_node2 ansible_host=<IP_du_node2> ansible_user=ansible_user
 
 ```
 Ensuite, testez Ansible via une commande ad hoc :
