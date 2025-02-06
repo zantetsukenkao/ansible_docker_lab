@@ -12,13 +12,6 @@ Cet exercice consiste à tester plusieurs commandes ad hoc Ansible pour interagi
 2. Un accès SSH aux nœuds cibles.
 3. Ansible installé sur votre machine locale.
 
-Exemple de fichier `inventory` :
-```ini
-[servers]
-server1 ansible_host=192.168.1.10
-server2 ansible_host=192.168.1.11
-```
-
 ## Commandes à tester
 ### Récupérer la version du noyau Linux
 Exécutez la commande suivante pour afficher la version du noyau sur tous les nœuds :
