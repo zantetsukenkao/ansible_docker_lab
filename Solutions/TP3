@@ -1,0 +1,30 @@
+- name: TP3
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: /app_data
+        state: directory
+        mode: '0744'
+
+    - name: Ensure group "app_group" exists
+      ansible.builtin.group:
+        name: app_group
+        state: present
+	
+    - name: Create a user 'app_user' with a home directory
+      ansible.builtin.user:
+        name: app_user
+        state: present
+        create_home: yes
+        home: /home/app_user
+        shell: /bin/bash
+        group: app_group
+
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: /app_data
+        owner: app_user
+        group: app_group
+        mode: '0744'
